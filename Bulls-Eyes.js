@@ -1,25 +1,24 @@
-PVector centerStage;
-final int NB_SQUARES = 110;
-final float RADIUS_STEP = 3;
-final float Z_STEP = 7;
-final float RADIUS_MIN = 4;
-final float MAX_ROTATION_SPEED = PI / 10;    
-final float MIN_ANGLE = 0;
-final float MAX_ANGLE = PI * 3;
-final float MIN_DEFAULT_ANGLE = -PI / 20;
-final float MAX_DEFAULT_ANGLE = PI / 20;
-final float ANGLE_FRICTION = .7;
-final float NOISE_R = random(123456);
-final float NOISE_G = random(123456);
-final float NOISE_B = random(123456);
-final float NOISE_COLOR_STEP = .02;
+PVector centerStage;	//Creates a 2 or 3 dimesional geometric vector and stores it in the variable centerStage
+final int NB_SQUARES = 110;	//Defines a constant value for the number of ???????
+final float RADIUS_STEP = 3;	//Defines a constant value for the number of ???????
+final float Z_STEP = 7;	//Defines a constant value for the ?????
+final float RADIUS_MIN = 4;	//Defines a constant value for the minimum radius of ????
+final float MAX_ROTATION_SPEED = PI / 10;    //Defines a constant value for the max rotation speed of ????
+final float MIN_ANGLE = 0;	//Defines a constant value for the minimum angle of ????
+final float MAX_ANGLE = PI * 3;	//Defines a constant value for the maximum angle of ????
+final float MIN_DEFAULT_ANGLE = -PI / 20;	//Defines a constant value for the minimum default angle of ????
+final float MAX_DEFAULT_ANGLE = PI / 20;	//Defines a constant value for the maximum default angle of ????
+final float ANGLE_FRICTION = .7;	//Defines a constant value for the ?????
+final float NOISE_R = random(123456);	//Generates random value between 0 and 123456 for input to noise function to generate red colour component of ???
+final float NOISE_G = random(123456);	//Generates random value between 0 and 123456 for input to noise function to generate green colour component of ???
+final float NOISE_B = random(123456);	//Generates random value between 0 and 123456 for input to noise function to generate blue colour component of ???
+final float NOISE_COLOR_STEP = .02;	//Defines constant value for the ???
 
-float[] tabAngles;
-float[] tabAngleSpeed;
-
-float[] tabColorsR;
-float[] tabColorsG;
-float[] tabColorsB;
+float[] tabAngles;	//Defines variable so that it is of type float array
+float[] tabAngleSpeed;	
+float[] tabColorsR;	
+float[] tabColorsG;	
+float[] tabColorsB;	
 
 //Tweens
 //rotation of the very first square
@@ -39,17 +38,16 @@ int count = 0;
 
 void setup()
 {
-  size(800, 600, P2D);//always the first line in setup//P2D, P3D, and PDF
-  frameRate(25);
-  strokeWeight(2);
-  rectMode(CENTER);
-
-  centerStage   = new PVector(width/2, height/2);
-  tabAngles      = new float[NB_SQUARES];
+  size(800, 600, P2D);	//Defines the size of the display window, setting the renderer to handle 2D graphics
+  frameRate(25);	//Specifies the number of frame changes every second
+  strokeWeight(2);	//Sets the width, in pixels, of the stroke used for lines, points and the border around shapes
+  rectMode(CENTER);	//Changes the rect function so that its first two parameters are the co-ordinates of the shapes center and that the last two are the shapes width and height
+  centerStage   = new PVector(width/2, height/2);	//Creates a 2D vector with x component half the value of the display window width, and y component half the value of the display window height
+  tabAngles      = new float[NB_SQUARES];	//Defines a float array of length NB_SQUARES
   tabColorsR     = new float[NB_SQUARES];
   tabColorsG     = new float[NB_SQUARES];
   tabColorsB     = new float[NB_SQUARES];
-  tabAngleSpeed  = new float[NB_SQUARES];
+  tabAngleSpeed  = new float[NB_SQUARES];W
 
   tabAngles[0]  = originalRotation;
   tabColorsR[0] = (random(255));
