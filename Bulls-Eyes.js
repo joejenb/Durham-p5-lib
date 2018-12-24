@@ -8,7 +8,7 @@ final float MIN_ANGLE = 0;	//Defines a constant value for the minimum angle betw
 final float MAX_ANGLE = PI * 3;	//Defines a constant value for the maximum angle between two squares/tabs
 final float MIN_DEFAULT_ANGLE = -PI / 20;	//Defines a constant value for the minimum default angle of the first square drawn
 final float MAX_DEFAULT_ANGLE = PI / 20;	//Defines a constant value for the maximum default angle of the first square drawn
-final float ANGLE_FRICTION = .7;	//Defines a constant value for the ?????
+final float ANGLE_FRICTION = .7;	//Defines a constant value to scale the change in angle
 final float NOISE_R = random(123456);	//Generates random value between 0 and 123456 for input to noise function to generate red colour component of squares
 final float NOISE_G = random(123456);	//Generates random value between 0 and 123456 for input to noise function to generate green colour component of squares
 final float NOISE_B = random(123456);	//Generates random value between 0 and 123456 for input to noise function to generate blue colour component of squares
@@ -27,7 +27,7 @@ float originalRotation = MIN_ANGLE + (MAX_ANGLE - MIN_ANGLE) * random(1);
 //color of the very first square
 float originalColor = 256/2;
 //default angle between two squares
-float defaultAngle = MIN_DEFAULT_ANGLE + (MAX_DEFAULT_ANGLE - MIN_DEFAULT_ANGLE)*random(1);	//float of value either pi/20 or -pi/20
+float defaultAngle = MIN_DEFAULT_ANGLE + (MAX_DEFAULT_ANGLE - MIN_DEFAULT_ANGLE)*random(1);	//float of value between pi/20 and -pi/20
 float defaultAngleEnd = MIN_DEFAULT_ANGLE + (MAX_DEFAULT_ANGLE - MIN_DEFAULT_ANGLE)*random(1);	
 
 float MIN_TWEEN_DURATION = 3;	//A variable that is never used
@@ -76,21 +76,22 @@ void changeAngle()
   case AUTO_MODE:
     tabAngles[0] = tweenValue((float)tabAngles[0], (float)originalRotation, random(.1));	//Sets the angle of the first square to be the difference between its current angle and its original, 
 												 //scaled by a random value between 0 and .1
-    if (abs((float)tabAngles[0] - (float)originalRotation) < .000001)	//If the newly calculated angle is effectively the same as the original angle then it is set to this 
-    {
+    if (abs((float)tabAngles[0] - (float)originalRotation) < .000001)	//If the newly calculated angle is effectively the same as the original angle then it is set to this and a new originalRotation is 
+									//calculated
+    {									//If not then the new angle remains what it is
       tabAngles[0] = originalRotation;
       originalRotation = MIN_ANGLE + (MAX_ANGLE - MIN_ANGLE) * random(1);
     }
-    defaultAngle = tweenValue((float)defaultAngle, (float)defaultAngleEnd, random(.2));
-    if (abs((float)defaultAngle - (float)defaultAngleEnd) < .00001)
+    defaultAngle = tweenValue((float)defaultAngle, (float)defaultAngleEnd, random(.2));	//Sets the default spacing between two squares to be the scaled difference of the first squares current angle and 
+											//that which it's moving towards
+    if (abs((float)defaultAngle - (float)defaultAngleEnd) < .00001)	//If the angle between two squares has reached it's intended value then a new angle for it to approach is calculated
     {
       defaultAngleEnd = MIN_DEFAULT_ANGLE + (MAX_DEFAULT_ANGLE - MIN_DEFAULT_ANGLE)*random(1);
     }
     break;
   case MOUSE_MODE:
-    tabAngles[0] = MIN_ANGLE + (MAX_ANGLE - MIN_ANGLE) * mouseX / width;
-    defaultAngle = MIN_DEFAULT_ANGLE + (MAX_DEFAULT_ANGLE - MIN_DEFAULT_ANGLE) * mouseY / 
-height;
+    tabAngles[0] = MIN_ANGLE + (MAX_ANGLE - MIN_ANGLE) * mouseX / width;	//In mouse mode the angle at which the first square is drawn is the proportion of the window the mouse has covered in x
+    defaultAngle = MIN_DEFAULT_ANGLE + (MAX_DEFAULT_ANGLE - MIN_DEFAULT_ANGLE) * mouseY / height;	//Sets default angle between two squares to be proportional to how how far up the screen mouse is
     break;
   default:
     print("unexpected case");
@@ -99,22 +100,22 @@ height;
 
   for (int i = 1; i < NB_SQUARES; i++)
   {
-    float prevAngle = tabAngles[i-1];
-    float currAngle = tabAngles[i];
-    float deltaAngles = prevAngle - currAngle;
-    tabAngleSpeed[i] = (deltaAngles + defaultAngle) * ANGLE_FRICTION;
+    float prevAngle = tabAngles[i-1];	//Stores the angle of the square before it
+    float currAngle = tabAngles[i];	//Stores the angle of the current square
+    float deltaAngles = prevAngle - currAngle;	//Stores the difference in angle between the current square and the previous one
+    tabAngleSpeed[i] = (deltaAngles + defaultAngle) * ANGLE_FRICTION;	//Calculates the speed at which the square must rotate
 
     if (tabAngleSpeed[i] > MAX_ROTATION_SPEED)
     {
-      tabAngleSpeed[i] = MAX_ROTATION_SPEED;
+      tabAngleSpeed[i] = MAX_ROTATION_SPEED;	//If speed needed is greater than what is allowed then it is set to the maximum it can be
     }
     else if (tabAngleSpeed[i] < -MAX_ROTATION_SPEED)
     {
-      tabAngleSpeed[i] = -MAX_ROTATION_SPEED;
+      tabAngleSpeed[i] = -MAX_ROTATION_SPEED;	//This is the same condition but in the opposite direction
     }
-    tabAngles[i] += tabAngleSpeed[i];
+    tabAngles[i] += tabAngleSpeed[i];	//Unit time of speed is same as time for frame to change therefore is change in angle
 
-    tabColorsR[i] += (tabColorsR[i-1] - tabColorsR[i]) - 0x000001;
+    tabColorsR[i] += (tabColorsR[i-1] - tabColorsR[i]) - 0x000001;	//Calculates change in colour for a square
     tabColorsG[i] += (tabColorsG[i-1] - tabColorsG[i]) - 0x000001;
     tabColorsB[i] += (tabColorsB[i-1] - tabColorsB[i]) - 0x000001;
   }
