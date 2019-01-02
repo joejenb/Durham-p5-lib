@@ -23,12 +23,17 @@ class square{
     return this.colour;
   }
 
-  drawIt(zStep){
+  drawIt(zStep, render){
     fill(this.colour[0], this.colour[1], this.colour[2]);
     push();
     rotate(this.angle);
-    //translate(0, 0, -zStep * this.z);
-    rect(0, 0, this.dim, this.dim);
+    translate(0, 0, -zStep * this.z);
+		if (render){
+    	box(this.dim, this.dim, zStep)
+		}
+		else{
+			rect(0, 0, this.dim, this.dim);
+		}
     pop();
   }
 }
@@ -36,7 +41,7 @@ class square{
 class bullsEye{
   constructor(){
     this.layers = 110;
-    this.zStep = 7;
+    this.zStep = 1;
     this.maxRot = Math.PI / 10;
     this.maxAngle = Math.PI * 3;
     this.defAngle = Math.PI / 20;
@@ -48,6 +53,7 @@ class bullsEye{
     this.movs = 0;
     this.destRot = this.maxAngle * random(1);
     this.noiseFactor = [random(123456), random(123456), random(123456)];
+		this.depth = 0
   }
 
   setupSquares(){
@@ -60,10 +66,14 @@ class bullsEye{
 
   drawIt(){
     for (var i = this.layers - 1; i >= 0; i--){
-      this.squares[i].drawIt(this.zStep);
+      this.squares[i].drawIt(this.zStep, this.render);
     }
     this.movs += 1;
   }
+
+	setDepth(depth){
+		this.depth = depth
+	}
 
   changeColour(){
     for (var i = 0; i < this.layers; i++){
@@ -71,7 +81,7 @@ class bullsEye{
       for (var t = 0; t < 3; t++){
         if (i !== 0){
 					let prevCol = this.squares[i - 1].getColour();
-          colour[t] += (prevCol[t] - colour[t]) - 0x000001;
+          colour[t] += (prevCol[t] - colour[t]) - 1;
         }
         else{
           colour[t] = noise(this.noiseFactor[t] + (this.movs * this.colStep)) * 255;
@@ -114,7 +124,7 @@ class bullsEye{
 
 
 function setup(){
-  createCanvas(800, 600, P2D);
+  createCanvas(800, 600, WEBGL);
   frameRate(25);
   strokeWeight(2);
   stroke(0, 0, 0, 90);
@@ -125,7 +135,9 @@ function setup(){
 
 function draw(){
 	background(0);
-	translate(400, 300);
+	//translate(400, 300);
+	ortho(-400, 400, -300, 300, -1000, 1000);
+	orbitControl();
   bullsEye1.changeColour();
   bullsEye1.changeAngle();
   bullsEye1.drawIt();
