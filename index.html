@@ -5,21 +5,34 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.7.2/p5.js"></script>
     <script type="text/javascript" src="p5-Summative.js"></script>
     <script type="text/javascript" src="index.js"></script>
+    <style>
+    label{
+      font-family: arial;
+    }
+    </style>
   </head>
 
   <body>
     <form id= "input">
-      <label>Depth</label>
+      <label style="">Depth</label>
       <input type= "range" min= "0" max= "20" value= "0" step= "1" id= "depth"/>
       <label>Zoom</label>
       <input type= "range" min= "200" max= "5000" value= "4680" step= "1" id= "zoom"/>
       <label>Oscillate</label>
-      <input type= "checkbox" value= "True" id= "oscillate"/>
+      <input type= "checkbox" id= "oscillate"/>
       <label>Angle</label>
       <input type= "range" min= "-800" max= "800" value= "0" step= "1" id= "angle"/>
       <label>Cube</label>
-      <input type= "checkbox" value= "True" id= "cube"/>
+      <input type= "checkbox" id= "cube"/>
     </form>
+    <p style = "font-family: arial">
+        The controls are as follows:
+          "Depth" changes the thickness/depth of the object,
+          "Zoom" allows you to zoom in and out on the object,
+          "Oscillate", when clicked, leads to the depth value continuosly changing between its maximum and minimum values,
+          "Angle" changes the angle from which the object is viewed and 
+          "Cube", when clicked, leads to the object being drawn on the faces of a rotating cube.
+    <p>
   </body>
 
 </html>

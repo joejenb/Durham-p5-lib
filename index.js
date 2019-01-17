@@ -6,44 +6,33 @@ var surface;
 
 
 function setup(){
-	createCanvas(1300, 800, WEBGL);
+	createCanvas(windowWidth - 20, windowHeight - 120, WEBGL);
 	frameRate(35);
-	bullsEye1 = new bullsEye();
-	bullsEye1.setupCuboids();
+	bullsEye1 = new BullsEye();
 }
 
 function draw(){
-	background(0);
-	stroke(0)
-	if (surface !== bullsEye1.surface){
-		bullsEye1.surface = surface;
-	}
-	if (oscillate){
-		bullsEye1.drill();
-	}
-	bullsEye1.changeColour();
-	bullsEye1.changeAngle();
+	bullsEye1.draw(surface);
 	if (surface){
-		surface.background(0);
-		bullsEye1.drawIt();
 		surface.camera(angleValue, 0, round(zoomValue), 0, 0, 0, 0, 1, 0);
-		camera(0, 0, 1000, 0, 0, 0, 0, 1, 0);
-		rotateX(frameCount * 0.01)
-		rotateY(frameCount * 0.01)
-		texture(surface);
+		camera(0, 0, 1000, 0, 0, 0, 0, 1, 0);	//Due to the size there must be one camera for the cube
+		rotateX(frameCount * 0.01);						//and one for what's on its surface
+		rotateY(frameCount * 0.01);	//Rotates the cordinate system for everything drawn after, within draw()
+		texture(surface);	//Applies the renderer buffer to all surfaces after this point in the fucntion
 		box(470);
 	}
 	else{
-		bullsEye1.drawIt();
 		camera(angleValue, 0, round(zoomValue), 0, 0, 0, 0, 1, 0);
 	}
 }
 document.addEventListener('DOMContentLoaded', function(){
+	/*Each function is called in response to a change in the state of a corresponding html
+	input. Both changeOscillation() and changeToCube() use checkbox's */
 	let depth = document.getElementById('depth');
 	let zoom = document.getElementById('zoom');
 	let angle = document.getElementById('angle');
 	let osciCB = document.getElementById('oscillate');
-  let cube = document.getElementById('cube');
+	let cube = document.getElementById('cube');
 
 
 	function changeDepth(event){
@@ -56,19 +45,16 @@ document.addEventListener('DOMContentLoaded', function(){
 		angleValue = angle.value;
 	}
 	function changeOscillation(event){
-		if (oscillate){
-			oscillate = false;
-		}
-		else{
-			oscillate = true;
-		}
+		oscillate = osciCB.checked;
 	}
-  function changeToCube(event){
-		if (surface){
-			surface = undefined;
+	function changeToCube(event){
+		/*If cube has just been clicked on or off then the renderer being used must
+		be changed to the other of the two options*/
+		if (cube.checked){
+			surface = createGraphics(470, 470, WEBGL);
 		}
 		else{
-			surface = createGraphics(470, 470, WEBGL);
+			surface = undefined;
 		}
   }
 
