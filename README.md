@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # p5-Summative.js
 Original sketch: https://www.openprocessing.org/sketch/126399 by oggy
 
@@ -165,18 +164,7 @@ unticked again.
 
 __Cube__
 
-This is again a checkbox input, when clicked it leads to changeToCube being called. If the box is ticked then an offscreen graphics buffer is created and assigned to the property 'surface' in bullsEye, if not ticked it is made undefined. This means that when the draw function is called if surface is defined then all cubes are drawn to the graphics buffer which is then used as a texture for a rotating box. If, however, it is not defined then bullsEye object is simply just drawn onto the canvas.
-=======
-# Durham p5 Library
-
-A library of reusable components for [p5js](https://p5js.org/). These are developed by the 1st Year Programming class at Durham University.
-
-## Instructions for adding components
-
-- Fork this repository
-- Create a subdirectory of the main repository named after your component containing
-   - A `.js` file containing the relevant class definition
-   - A `.html` file which uses the .js file and demonstrates its use
-   - A `README.md` file which contains the documentation for the class
-- Once everything is complete (including peer review) make a pull request from your forked repository to <https://github.com/stevenaeola/Durham-p5-lib>
->>>>>>> 6fcae8252f52838565589544ebb30f8e433fd622
+This is again a checkbox input, when clicked it leads to changeToCube being called. If the box is ticked then an offscreen graphics buffer is created and assigned
+to the property 'surface' in bullsEye, if not ticked it is made undefined. This means that when the draw function is called if surface is defined then all cubes are
+drawn to the graphics buffer which is then used as a texture for a rotating box. If, however, it is not defined then bullsEye object is simply just drawn onto the
+canvas.
